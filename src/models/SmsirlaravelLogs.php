@@ -1,6 +1,6 @@
 <?php
 
-namespace Ipecompany\Smsirlaravel;
+namespace Ipecompany\Models\Smsirlaravel;
 
 use Illuminate\Database\Eloquent\Model;
 

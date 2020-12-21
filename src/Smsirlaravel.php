@@ -27,23 +27,34 @@ class Smsirlaravel
 					} else {
 						$msg = $messages;
 					}
-					$log = SmsirlaravelLogs::create( [
-						'response' => $res['Message'],
-						'message'  => $msg,
-						'status'   => $res['IsSuccessful'],
-						'from'     => config('smsirlaravel.line-number'),
-						'to'       => $number,
-					]);
+
+					try{
+						$log = SmsirlaravelLogs::create( [
+							'response' => $res['Message'],
+							'message'  => $msg,
+							'status'   => $res['IsSuccessful'],
+							'from'     => config('smsirlaravel.line-number'),
+							'to'       => $number,
+						]);
+					} catch ( \Throwable $exception ) {
+						report($exception);
+						return true;
+					}
 				}
 			} else {
 				foreach ( array_combine( $messages, $numbers ) as $message => $number ) {
-					SmsirlaravelLogs::create( [
-						'response' => $res['Message'],
-						'message'  => $message,
-						'status'   => $res['IsSuccessful'],
-						'from'     => config('smsirlaravel.line-number'),
-						'to'       => $number,
-					]);
+					try{
+						SmsirlaravelLogs::create( [
+							'response' => $res['Message'],
+							'message'  => $message,
+							'status'   => $res['IsSuccessful'],
+							'from'     => config('smsirlaravel.line-number'),
+							'to'       => $number,
+						]);
+					} catch ( \Throwable $exception ) {
+						report($exception);
+						return true;
+					}
 				}
 			}
 		}
